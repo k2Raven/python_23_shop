@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Сумма</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cart in cart_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ cart.product.title }}</td>
+                <td>{{ cart.product.price }}</td>
+                <td>{{ cart.qty }}</td>
+                <td>{{ cart.get_total_price }}</td>
+                <td><a href="{% url 'webapp:product_remove_cart' cart.pk %}">Удалить все</a></td>
+                <td><a href="{% url 'webapp:product_one_remove_cart' cart.pk %}">Удалить</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h2>Итого: {{ total }}</h2>
+    {% url 'webapp:order_create_view' as action_url %} 
+    {% include 'partial/form.html' with button_text="Заказать" %}
+
+{% endblock %}
