@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+
+{% block link %}
+    {% if user == user_obj %}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+               href="{% url 'accounts:change-profile' user_obj.pk %}">Change profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+               href="{% url 'accounts:change-password' user_obj.pk %}">Change password</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="card" style="width: 18rem;">
+        {% if  user_obj.profile.avatar %}
+            <img src="{{ user_obj.profile.avatar.url }}" class="card-img-top" alt="...">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">Username - {{ user_obj.username }}</h5>
+            <p>Email - {{ user_obj.email }}</p>
+            <p class="card-text">Birthday - {{ user_obj.profile.birth_date|default:"не указан" }}</p>
+        </div>
+    </div>
+{% endblock %}

@@ -19,9 +19,9 @@
                 <td>{{ cart.product.title }}</td>
                 <td>{{ cart.product.price }}</td>
                 <td>{{ cart.qty }}</td>
-                <td>{{ cart.get_total_price }}</td>
-                <td><a href="{% url 'webapp:product_remove_cart' cart.pk %}">Удалить все</a></td>
-                <td><a href="{% url 'webapp:product_one_remove_cart' cart.pk %}">Удалить</a></td>
+                <td>{{ cart.total_price }}</td>
+                <td><a href="{% url 'webapp:product_remove_cart' cart.product.pk %}">Удалить все</a></td>
+                <td><a href="{% url 'webapp:product_one_remove_cart' cart.product.pk %}">Удалить</a></td>
             </tr>
         {% endfor %}
         </tbody>

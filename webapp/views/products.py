@@ -22,8 +22,11 @@ class ProductListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        errors = self.request.session.pop("errors", {})
         context = super().get_context_data(object_list=None, **kwargs)
         context["form"] = self.form
+        context["errors"] = {int(key): value for key, value in errors.items()}
+        print(context["errors"])
         if self.search_value:
             context["query"] = urlencode({'search': self.search_value})
             context["search_value"] = self.search_value

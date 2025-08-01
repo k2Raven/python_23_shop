@@ -11,10 +11,13 @@
     <br>
     {% include "partial/search_form.html" %}
     <div class="row">
-        {% for product in products%}
+        {% for product in products %}
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card mt-3" style="width: 18rem;">
                     <div class="card-body">
+                        {% if product.pk in errors.keys %}
+                            <p class="text-danger">{{ errors }}</p>
+                        {% endif %}
                         <h5 class="card-title">{{ product.title }}</h5>
                         <p class="card-text">{{ product.price }}</p>
                         <p class="card-text">{{ product.amount }}</p>

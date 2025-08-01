@@ -14,9 +14,10 @@ class ProductForm(forms.ModelForm):
         fields = "__all__"
 
 
-class CartForm(forms.ModelForm):
+class CartForm(forms.Form):
+    qty = forms.IntegerField(min_value=1, max_value=100)
+
     class Meta:
-        model = Cart
         fields = ("qty",)
 
 
@@ -25,11 +26,23 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ("name", "phone", "address")
 
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
+
     def clean(self):
         data = super().clean()
-        for item in Cart.objects.all():
-            if item.qty > item.product.amount:
-                if item.product.amount:
-                    raise ValidationError(f'Товара {item.product.title} оасталось {item.product.amount}')
-                raise ValidationError(f'Товар {item.product.title} закончился')
+        cart = self.request.session.get("cart", {})
+        if not cart:
+            raise ValidationError("Не выбрано ни одного товара")
+        for product_pk, qty in cart.items():
+            try:
+                product = Product.objects.get(pk=product_pk)
+                if qty > product.amount:
+                    if product.amount:
+                        raise ValidationError(f'Товара {item.product.title} оасталось {item.product.amount}')
+                    raise ValidationError(f'Товар {item.product.title} закончился')
+            except Product.DoesNotExist:
+                raise ValidationError("Один из товаров удален")
         return data
