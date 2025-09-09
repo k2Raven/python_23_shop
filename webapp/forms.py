@@ -41,8 +41,8 @@ class OrderForm(forms.ModelForm):
                 product = Product.objects.get(pk=product_pk)
                 if qty > product.amount:
                     if product.amount:
-                        raise ValidationError(f'Товара {item.product.title} оасталось {item.product.amount}')
-                    raise ValidationError(f'Товар {item.product.title} закончился')
+                        raise ValidationError(f'Товара {product.title} оасталось {product.amount}')
+                    raise ValidationError(f'Товар {product.title} закончился')
             except Product.DoesNotExist:
                 raise ValidationError("Один из товаров удален")
         return data
